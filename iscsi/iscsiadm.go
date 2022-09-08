@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+var DefaultIscsiCmdTimeout = time.Second * 10
+
 // Secrets provides optional iscsi security credentials (CHAP settings)
 type Secrets struct {
 	// SecretsType is the type of Secrets being utilized (currently we only impleemnent "chap"
@@ -21,7 +23,7 @@ type Secrets struct {
 }
 
 func iscsiCmd(args ...string) (string, error) {
-	stdout, err := execWithTimeout("iscsiadm", args, time.Second*3)
+	stdout, err := execWithTimeout("iscsiadm", args, DefaultIscsiCmdTimeout)
 
 	debug.Printf("Run iscsiadm command: %s", strings.Join(append([]string{"iscsiadm"}, args...), " "))
 	iscsiadmDebug(string(stdout), err)
